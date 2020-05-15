@@ -62,7 +62,7 @@ const StyledTitle = styled.span`
   font-family: 'Chonburi', cursive;
 `;
 
-const Nav = ({busqueda, handleClick}) => {
+const Nav = ({busqueda}) => {
 
  const history = useHistory();
  const [searchInput, setSearchInput] = useState('');
@@ -87,8 +87,8 @@ const Nav = ({busqueda, handleClick}) => {
     <input type="text" onChange={handleChange}></input>
    </form>
    <img className='search-icon' src={searchIcon} alt='search-icon' onClick={handleSubmit}/> 
-   <Link to='./help'>
-     <p onClick={handleClick}>Ayuda</p>
+   <Link to='/help'>
+     <p>Ayuda</p>
    </Link>
   </NavBar>
  )

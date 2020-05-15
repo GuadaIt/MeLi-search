@@ -1,4 +1,5 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ItemSection = styled.section`
@@ -61,27 +62,46 @@ const ItemSection = styled.section`
  };
 `;
 
-const SingleProductSection = ({ item }) => {
- 
- return (
-  <ItemSection>
-   <div className='item-container'>
-    <div className='description-img-container'>
-     <img src={item.pictures[0].url} alt={item.title} />
-     <h3>Descripción</h3>
-     <p>{item.description}</p>
-    </div>
-    <div className='details-container'>
-     <p>{item.condition === 'new' ? 'Nuevo - ' : 'Usado - '}{item.sold_quantity} vendidos</p>
-     <h2>{item.title}</h2>
-     <p className='price-p'>${item.price}</p>
-     <a href={item.permalink}>
-      <button type='button'>Comprar</button>
-     </a>
-    </div>
-   </div>
-  </ItemSection>
- );
+const SingleProductSection = () => {
+
+  const params = useParams();
+  const [item, setItem] = useState(null);
+
+  useEffect(() => {
+    let itemInfo = {};
+    fetch(`https://api.mercadolibre.com/items/${params.id}`)
+      .then(res => res.json())
+      .then(data => itemInfo = data);
+
+    fetch(`https://api.mercadolibre.com/items/${params.id}/description`)
+      .then(res => res.json())
+      .then(data => {
+        itemInfo.description = data.plain_text;
+        setItem(itemInfo);
+      });
+  }, []);
+
+  return (
+    <ItemSection>
+      {item && (
+        <div className='item-container'>
+          <div className='description-img-container'>
+            <img src={item.pictures[0].url} alt={item.title} />
+            <h3>Descripción</h3>
+            <p>{item.description}</p>
+          </div>
+          <div className='details-container'>
+            <p>{item.condition === 'new' ? 'Nuevo - ' : 'Usado - '}{item.sold_quantity} vendidos</p>
+            <h2>{item.title}</h2>
+            <p className='price-p'>${item.price}</p>
+            <a href={item.permalink}>
+              <button type='button'>Comprar</button>
+            </a>
+          </div>
+        </div>
+      )}
+    </ItemSection>
+  )
 };
 
 export default SingleProductSection;

@@ -13,6 +13,9 @@ const Item = styled(Link)`
   &:hover {
    transform: scale(1.05);
    background-color: rgb(176, 206, 111);
+   .free-shipping {
+     background-color: #fff;
+   };
   };
 `;
 
@@ -28,9 +31,18 @@ const ItemInfo = styled.div`
      height: auto;
     };
     .free-shipping {
-      width: 30px;
+      background-color: rgb(150, 190, 62); 
+      width: 40px;
+      height: 40px;
       position: relative;
-      left: 70px; 
+      left: 70px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
+       width: 60%;
+      }; 
     };
    p {
      font-size: 30px;
@@ -49,7 +61,7 @@ const ItemInfo = styled.div`
    };
 `;
 
-const Card = ({product, busquedaItem}) => {
+const Card = ({product}) => {
  
  return (
   <Item to= {`/product/${product.id}`} >
@@ -58,7 +70,7 @@ const Card = ({product, busquedaItem}) => {
       {product.shipping.free_shipping && <div className='free-shipping'><img src={freeShippingIcon} alt='free shipping'/></div>}
       <h4>{product.title}</h4>
       <p>${product.price}</p>
-      <button type='button' onClick={() => busquedaItem(product.id)}>Ver más</button>
+      <button type='button'>Ver más</button>
     </ItemInfo>
   </Item>
  )
