@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import CardsContainer from './components/CardsContainer';
 
-function App() {
+const App = () => {
+   
+  const [productList, setProductList] = useState([]);
+  
+  const busqueda = searchInput => {
+    fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${searchInput}`)
+     .then(res => res.json())
+     .then(data => setProductList(data.results));
+  };
+
+
+   
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      
+     <Switch>
+       <Route exact path='/' component={() => <Home busqueda={busqueda}/>} />
+       <Route to='/search/:product' component={() => <CardsContainer productList={productList} busqueda={busqueda}/>}/>       
+     </Switch>
+
+    </Router>
   );
 }
 
