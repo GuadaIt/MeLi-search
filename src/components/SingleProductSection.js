@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,11 +22,11 @@ const ItemSection = styled.section`
      text-align: center;
     };
     img {
-     width: 100%;
+     width: 50%;
      height: auto;
-     @media (max-width: 800px) {
-      width: 50%;
-     };
+     display: block;
+     margin-left: auto;
+     margin-right: auto;
     };
     h3 {
      margin-bottom: 0;
