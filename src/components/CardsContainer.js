@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Nav from './Nav';
 import Card from './Card.js';
 
 
@@ -11,11 +10,10 @@ const Section = styled.section`
  background-color: rgb(215, 230, 183);
 `;
 
-const CardsContainer = ({productList, busqueda}) => {
+const CardsContainer = ({productList}) => {
 
  return (
   <>
-   <Nav busqueda={busqueda}/>
    <Section> {productList.map((product) => <Card product={product} key={product.id}/>)}</Section>   
   </>
  );
