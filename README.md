@@ -14,7 +14,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 
 
-### ### E-commerce buscador de productos
+### E-commerce buscador de productos
 
 Éste proyecto fue creado con React y se comunica con una API pública para obtener información de diferentes productos y mostrarlos en el frontend.
 
