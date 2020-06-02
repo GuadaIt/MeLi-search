@@ -4,12 +4,12 @@ import CardsContainer from './CardsContainer';
 import SingleProductSection from './SingleProductSection';
 import HelpPage from './HelpPage';
 
-const MainContainer = ({ busqueda, productList, component }) => {
+const MainContainer = ({ component }) => {
 
   return (
    <>
-    <Nav busqueda={busqueda} />
-    {component === 'results' && <CardsContainer busqueda={busqueda} productList={productList}/>}
+    <Nav />
+    {component === 'results' && <CardsContainer />}
     {component === 'single' && <SingleProductSection />}
     {component === 'help' && <HelpPage />}
    </> 

@@ -52,14 +52,13 @@ const Icon = styled.img`
 `;
 
 
-const Home = ({busqueda}) => {
+const Home = () => {
 
  const history = useHistory();
  const [searchInput, setSearchInput] = useState('');
  
  const handleSubmit = e => {
   e.preventDefault();
-  busqueda(searchInput);
   history.push(`./search/${searchInput}`);
  };
 

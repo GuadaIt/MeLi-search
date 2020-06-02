@@ -62,7 +62,7 @@ const StyledTitle = styled.span`
   font-family: 'Chonburi', cursive;
 `;
 
-const Nav = ({busqueda}) => {
+const Nav = ({ busqueda }) => {
 
  const history = useHistory();
  const [searchInput, setSearchInput] = useState('');
@@ -73,7 +73,6 @@ const Nav = ({busqueda}) => {
 
  const handleSubmit = e => {
    e.preventDefault();
-   busqueda(searchInput);
    history.push(`/search/${searchInput}`);
  };
 
