@@ -41,7 +41,7 @@ const StyledTitle = styled.span`
 const Icon = styled.img`
  height: 30px;
  position: relative;
- left: 500px;
+ left: 450px;
  bottom: 35px;
  @media (max-width: 800px) {
    left: 260px;

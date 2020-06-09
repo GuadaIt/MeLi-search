@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import Card from './Card.js';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage.js';
 
 const Section = styled.section`
  display: flex;
@@ -12,20 +15,23 @@ const Section = styled.section`
 
 const CardsContainer = () => {
 
- const { product } = useParams();
- const [productList, setProductList] = useState([]);
+   const { product } = useParams();
 
- useEffect(() => {
-    fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${product}`)
-    .then(res => res.json())
-    .then(data => setProductList(data.results));
- }, [product]);
- 
- return (
-  <>
-   <Section> {productList.map((product) => <Card product={product} key={product.id}/>)}</Section>   
-  </>
- );
+   const fetchItems = async () => {
+      const res = await fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${product}`);
+      const searchedItems = await res.json();
+
+      return searchedItems;
+   };
+
+   const { status, data } = useQuery('fetch_searched_items', fetchItems);
+
+   if (status === 'loading') return <LoadingSpinner />
+   if (status === 'error') return <ErrorMessage />
+
+   return (
+      <Section> {data.results.map((product) => <Card product={product} key={product.id} />)}</Section>
+   );
 };
 
 export default CardsContainer;

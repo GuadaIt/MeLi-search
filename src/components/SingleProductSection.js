@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage.js';
 
 const ItemSection = styled.section`
  background-color: rgb(215, 230, 183);
  display: flex;
  justify-content: center;
  padding: 30px 0;
+ min-height: 100vh;
  .item-container {
   width: 90%;
   background-color: #fff;
@@ -65,41 +69,39 @@ const ItemSection = styled.section`
 const SingleProductSection = () => {
 
   const params = useParams();
-  const [item, setItem] = useState(null);
 
-  useEffect(() => {
-    let itemInfo = {};
-    fetch(`https://api.mercadolibre.com/items/${params.id}`)
-      .then(res => res.json())
-      .then(data => itemInfo = data);
+  const fetchItem = async () => {
+    const res = await fetch(`https://api.mercadolibre.com/items/${params.id}`);
+    const data = await res.json();
+    
+    const resDescription = await fetch(`https://api.mercadolibre.com/items/${params.id}/description`);
+    data.description = await resDescription.json();
+    
+    return data;
+  };
 
-    fetch(`https://api.mercadolibre.com/items/${params.id}/description`)
-      .then(res => res.json())
-      .then(data => {
-        itemInfo.description = data.plain_text;
-        setItem(itemInfo);
-      });
-  }, []);
+  const { status, data } = useQuery('fetch_item_data', fetchItem);
+ 
+  if (status === 'loading') return <LoadingSpinner />
+  if (status === 'error') return <ErrorMessage />
 
   return (
     <ItemSection>
-      {item && (
         <div className='item-container'>
           <div className='description-img-container'>
-            <img src={item.pictures[0].url} alt={item.title} />
+            <img src={data.pictures[0].url} alt={data.title} />
             <h3>Descripción</h3>
-            <p>{item.description}</p>
+            <p>{data.description.plain_text}</p>
           </div>
           <div className='details-container'>
-            <p>{item.condition === 'new' ? 'Nuevo - ' : 'Usado - '}{item.sold_quantity} vendidos</p>
-            <h2>{item.title}</h2>
-            <p className='price-p'>${item.price}</p>
-            <a href={item.permalink}>
+            <p>{data.condition === 'new' ? 'Nuevo - ' : 'Usado - '}{data.sold_quantity} vendidos</p>
+            <h2>{data.title}</h2>
+            <p className='price-p'>${data.price}</p>
+            <a href={data.permalink}>
               <button type='button'>Comprar</button>
             </a>
           </div>
         </div>
-      )}
     </ItemSection>
   )
 };
